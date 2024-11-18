@@ -1,14 +1,20 @@
 package com.pitagoras.springboot.demo.rent.rest;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GeneralController {
+    @Value("${car.name}")
+    private String carName;
+
+    @Value("${motor.type}")
+    private String motorType;
 
     @GetMapping("/")
     public String sayHello(){
-        return "Hello world!";
+        return "Hello world!,my car name is "+ this.carName + ",and motor type is "+ motorType;
     }
 
     @GetMapping("/about")
@@ -22,6 +28,6 @@ public class GeneralController {
     }
     @GetMapping("/test")
     public String test(){
-        return "Test 1";
+        return "Test 1 ksdjksd";
     }
 }
