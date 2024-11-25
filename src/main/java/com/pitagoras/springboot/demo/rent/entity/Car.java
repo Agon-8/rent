@@ -25,7 +25,7 @@ public class Car {
     private String color;
 
 
-    @Column(name = "licensePlate")
+    @Column(name = "license_plate")
     private String licensePlate;
 
     @Column(name = "available")
@@ -98,5 +98,18 @@ public class Car {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", year=" + year +
+                ", color='" + color + '\'' +
+                ", licensePlate='" + licensePlate + '\'' +
+                ", available=" + available +
+                '}';
     }
 }
