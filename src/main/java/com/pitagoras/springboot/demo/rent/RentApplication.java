@@ -10,6 +10,6 @@ public class RentApplication {
 		SpringApplication.run(RentApplication.class, args);
 
 		System.out.println("Hello world");
-	}
 
+	}
 }
