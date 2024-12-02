@@ -2,6 +2,8 @@ package com.pitagoras.springboot.demo.rent.rest;
 
 import com.pitagoras.springboot.demo.rent.dao.CarDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.pitagoras.springboot.demo.rent.entity.Car;
@@ -14,24 +16,31 @@ public class CarController {
     private CarDAO carDAO;
 
     @Autowired
-    public CarController( CarDAO carDAO){
+    public CarController(CarDAO carDAO) {
         this.carDAO = carDAO;
     }
 
-    @GetMapping("/save-car")
-    public String save(){
+    @GetMapping("/save-car/{make}/{model}/{color}")
+    public Car save(@PathVariable String make, @PathVariable String model, @PathVariable String color) {
         Car car = new Car();
-        car.setModel("M5");
-        car.setMake("BMW");
-        car.setColor("BLue");
+        car.setModel(model);
+        car.setMake(make);
+        car.setColor(color);
 
         this.carDAO.save(car);
 
-        return "Car was created susscessfully " + car.getId() ;
+        return this.carDAO.findById(car.getId());
     }
-    @GetMapping("/find-car")
-    public String findById(){
-        return this.carDAO.findById(3).toString();
+
+    @GetMapping("/find-car/{carId}")
+    public Car findById(@PathVariable int carId) {
+
+        Car vetura = this.carDAO.findById(carId);
+        if (vetura == null) {
+            throw new CarNotFoundException("Car with id " + carId + " not found.");
+        }
+        return vetura;
+
     }
 
     @GetMapping("/update-car")
@@ -52,23 +61,28 @@ public class CarController {
 
         return "Car updated successfully with id: " + car.getId();
     }
+
     @GetMapping("/delete-car")
-    public String deleteCar(){
+    public String deleteCar() {
         Car car = this.carDAO.findById(1);
-        if (car == null){
+        if (car == null) {
             return "Car with the id 1 not found";
         }
         carDAO.deleteCar(car);
         return "Car was deleted susscessfully";
     }
-    @GetMapping("/findAll-car")
-    public String findAll(){
-        List<Car> cars = this.carDAO.findAll();
-        String response = ",";
-        for (Car car :cars ){
-            response += car.toString() + "\n";
 
-        }
-        return response;
+    @GetMapping("/findAll-car")
+    public List<Car> findAll() {
+        List<Car> cars = this.carDAO.findAll();
+        return cars;
     }
+
+    @GetMapping("/test-html")
+    public String testingHtml() {
+        return "<h1>Pitagoras sasad</h1>" +
+                "<button>Kliko ketu</button>";
+
+    }
+
 }
