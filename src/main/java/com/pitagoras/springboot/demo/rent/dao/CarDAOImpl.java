@@ -49,4 +49,17 @@ public class CarDAOImpl implements CarDAO{
         TypedQuery<Car> theQuery = entityManager.createQuery("FROM Car", Car.class);
         return theQuery.getResultList();
     }
+
+    @Override
+    public Car find(String licensePlate) {
+        TypedQuery<Car> theQuery = entityManager.createQuery(
+                "FROM Car WHERE licensePlate=:tabllat", Car.class);
+        theQuery.setParameter("tabllat", licensePlate);
+        List<Car> result =  theQuery.getResultList();
+        if(result.size() == 0){
+            return null;
+        }
+        return result.get(0);
+
+    }
 }

@@ -17,8 +17,8 @@ public class RentRestExceptionHandler {
         error.setTimeStamp(System.currentTimeMillis());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler
 
+    @ExceptionHandler
     public ResponseEntity<CarErrorResponse> handleException(Exception exc) {
         CarErrorResponse error = new CarErrorResponse();
         error.setStatus(HttpStatus.BAD_REQUEST.value());

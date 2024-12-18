@@ -16,4 +16,6 @@ public interface CarDAO {
     void deleteCar(Car theCar);
 
     List<Car> findAll();
+
+    Car find(String licensePlate);
 }

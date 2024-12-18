@@ -11,6 +11,7 @@ import com.pitagoras.springboot.demo.rent.entity.Car;
 import java.util.List;
 
 @RestController
+@RequestMapping("/cars")
 public class CarController {
 
     private CarDAO carDAO;
@@ -20,19 +21,15 @@ public class CarController {
         this.carDAO = carDAO;
     }
 
-    @GetMapping("/save-car/{make}/{model}/{color}")
-    public Car save(@PathVariable String make, @PathVariable String model, @PathVariable String color) {
-        Car car = new Car();
-        car.setModel(model);
-        car.setMake(make);
-        car.setColor(color);
+    @PostMapping()
+    public Car save(@RequestBody Car carRequest) {
 
-        this.carDAO.save(car);
-
-        return this.carDAO.findById(car.getId());
+        carRequest.setId(0);
+        this.carDAO.save(carRequest);
+        return this.carDAO.findById(carRequest.getId());
     }
 
-    @GetMapping("/find-car/{carId}")
+    @GetMapping("/find/{carId}")
     public Car findById(@PathVariable int carId) {
 
         Car vetura = this.carDAO.findById(carId);
@@ -43,36 +40,26 @@ public class CarController {
 
     }
 
-    @GetMapping("/update-car")
-    public String updateCar() {
-        Car car = this.carDAO.findById(4);
+    @PutMapping("/{id}")
+    public Car updateCar(@RequestBody Car car,@PathVariable int id) {
+        car.setId(id);
+        this.carDAO.updateCar(car);
+        Car updatedCar = this.carDAO.findById(car.getId());
+        return updatedCar;
 
-        if (car == null) {
-            return "Car with the id 2 not found";
-        }
-
-        car.setMake("Peugeot");
-        car.setModel("3008");
-        car.setColor("Blue");
-        car.setYear(2020);
-        car.setAvailable(true);
-        car.setLicensePlate("01-112-MK");
-        carDAO.updateCar(car);
-
-        return "Car updated successfully with id: " + car.getId();
     }
 
-    @GetMapping("/delete-car")
-    public String deleteCar() {
-        Car car = this.carDAO.findById(1);
+    @DeleteMapping("/{id}")
+    public boolean deleteCar(@PathVariable int id) {
+        Car car = this.carDAO.findById(id);
         if (car == null) {
-            return "Car with the id 1 not found";
+            throw new CarNotFoundException("Car with id "+ id + " was not found");
         }
         carDAO.deleteCar(car);
-        return "Car was deleted susscessfully";
+        return true;
     }
 
-    @GetMapping("/findAll-car")
+    @GetMapping("/list")
     public List<Car> findAll() {
         List<Car> cars = this.carDAO.findAll();
         return cars;
@@ -85,4 +72,14 @@ public class CarController {
 
     }
 
+    @GetMapping("/find-car-plate/{licensePlate}")
+    public Car findByPlate(@PathVariable String licensePlate) {
+
+        Car vetura = this.carDAO.find(licensePlate);
+        if (vetura == null) {
+            throw new CarNotFoundException("Car with licensePlate " + licensePlate + " not found.");
+        }
+        return vetura;
+
+    }
 }

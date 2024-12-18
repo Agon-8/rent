@@ -31,7 +31,13 @@ public class Car {
     @Column(name = "available")
     private boolean available;
 
-    public Car(int id, String make, String model, int year, String color, String licensePlate, boolean available) {
+    @Column(name = "km_passed")
+    private Integer kmPassed;
+
+    public Car() {
+    }
+
+    public Car(int id, String make, String model, int year, String color, String licensePlate, boolean available, Integer kmPassed) {
         this.id = id;
         this.make = make;
         this.model = model;
@@ -39,9 +45,7 @@ public class Car {
         this.color = color;
         this.licensePlate = licensePlate;
         this.available = available;
-    }
-
-    public Car() {
+        this.kmPassed = kmPassed;
     }
 
     public int getId() {
@@ -100,6 +104,14 @@ public class Car {
         this.available = available;
     }
 
+    public Integer getKmPassed() {
+        return kmPassed;
+    }
+
+    public void setKmPassed(Integer kmPassed) {
+        this.kmPassed = kmPassed;
+    }
+
     @Override
     public String toString() {
         return "Car{" +
@@ -110,6 +122,7 @@ public class Car {
                 ", color='" + color + '\'' +
                 ", licensePlate='" + licensePlate + '\'' +
                 ", available=" + available +
+                ", kmPassed=" + kmPassed +
                 '}';
     }
 }
