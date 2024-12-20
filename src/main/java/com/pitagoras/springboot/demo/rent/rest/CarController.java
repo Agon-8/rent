@@ -42,6 +42,10 @@ public class CarController {
 
     @PutMapping("/{id}")
     public Car updateCar(@RequestBody Car car,@PathVariable int id) {
+        Car toUpdatedCar = this.carDAO.findById(id);
+        if(toUpdatedCar == null){
+            throw new CarNotFoundException("Car with id "+ id + " not found to update");
+        }
         car.setId(id);
         this.carDAO.updateCar(car);
         Car updatedCar = this.carDAO.findById(car.getId());

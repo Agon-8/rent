@@ -4,56 +4,51 @@ import com.pitagoras.springboot.demo.rent.entity.Car;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Primary
+public class CarDaoJpaImpl implements CarDAO{
 
-@Repository
-@Transactional
-public class CarDAOImpl implements CarDAO{
+    @Autowired
 
     private EntityManager entityManager;
 
-    @Autowired
-    public CarDAOImpl(EntityManager entityManager) {
+
+    public CarDaoJpaImpl(EntityManager entityManager){
         this.entityManager = entityManager;
     }
 
     @Override
-//    @Transactional
     public void save(Car theCar) {
-        entityManager.persist(theCar);
+        Car car = this.entityManager.merge(theCar);
     }
 
     @Override
-//    @Transactional
     public Car findById(int id) {
-        return entityManager.find(Car.class,id);
+        Car car = this.entityManager.find(Car.class,id);
+        return car;
     }
 
     @Override
-//    @Transactional
+    @Transactional
     public void updateCar(Car theCar) {
-        entityManager.merge(theCar);
+        Car car = this.entityManager.merge(theCar);
     }
 
     @Override
-//    @Transactional
-        public void deleteCar(Car theCar) {
-        entityManager.remove(theCar);
+    public void deleteCar(Car theCar) {
+       this.entityManager.remove(theCar);
     }
 
     @Override
-//    @Transactional
     public List<Car> findAll() {
         TypedQuery<Car> theQuery = entityManager.createQuery("FROM Car", Car.class);
-        return theQuery.getResultList();
-    }
+        return theQuery.getResultList();    }
 
     @Override
-//    @Transactional
     public Car find(String licensePlate) {
         TypedQuery<Car> theQuery = entityManager.createQuery(
                 "FROM Car WHERE licensePlate=:tabllat", Car.class);
@@ -65,4 +60,5 @@ public class CarDAOImpl implements CarDAO{
         return result.get(0);
 
     }
+
 }
