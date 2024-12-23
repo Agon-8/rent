@@ -1,7 +1,10 @@
 package com.pitagoras.springboot.demo.rent.seeds;
 
 import com.pitagoras.springboot.demo.rent.dao.CarDAOImpl;
+import com.pitagoras.springboot.demo.rent.dao.CarRepository;
+import com.pitagoras.springboot.demo.rent.dao.SeedRepository;
 import com.pitagoras.springboot.demo.rent.entity.Car;
+import com.pitagoras.springboot.demo.rent.entity.Seed;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,41 +14,43 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Configuration
 @EnableTransactionManagement
 public class SetKmPassedToCars implements ApplicationRunner {
 
-    private final EntityManager entityManager;
+    private final CarRepository carRepository;
+    private final SeedRepository seedRepository;
 
     @Autowired
-    public SetKmPassedToCars(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public SetKmPassedToCars(CarRepository carRepository,SeedRepository seedRepository) {
+        this.carRepository = carRepository;
+        this.seedRepository = seedRepository;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        CarDAOImpl repository = new CarDAOImpl(this.entityManager);
+        String seedName = "SetKmPassedToCars";
+        Optional<Seed> seed = this.seedRepository.findByName(seedName);
+        if(seed.isPresent()){
+            return;
+        }
+        Seed seedToBeExecuted = new Seed();
+        seedToBeExecuted.setName(seedName);
+        seedToBeExecuted.setSuccess(false);
+        Seed savedSeed = this.seedRepository.save(seedToBeExecuted);
+        List<Car> cars =  this.carRepository.findAll();
+        Random rand = new Random();
+        for(Car car : cars){
+            int kmPassed = rand.nextInt(10000,200000);
+            car.setKmPassed(kmPassed);
+            this.carRepository.save(car);
+        }
+        savedSeed.setSuccess(true);
+        this.seedRepository.save(savedSeed);
 
-//        Random rand = new Random();
-
-//        List<Car> cars = repository.findAll();
-       // cars.get(0).setKmPassed(123400);
-//        repository.findById(1);
-//        repository.findById(2);
-       // Query toExecute =  this.entityManager.createQuery("update Car set kmPassed = 12400 where id = 3");
-      //  repository.updateCar(cars.get(0));
-
-     //   toExecute.executeUpdate();
-//        for (Car car : cars){
-//            repository = new CarDAOImpl(this.entityManager);
-//            int kmPassed = rand.nextInt(10000,200000);
-//            System.out.println(kmPassed);
-//            System.out.println(car);
-//            car.setKmPassed(kmPassed);
-//            repository.updateCar(car);
-//        }
     }
 }
