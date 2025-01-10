@@ -1,89 +1,62 @@
 package com.pitagoras.springboot.demo.rent.rest;
 
-import com.pitagoras.springboot.demo.rent.dao.CarDAO;
+import com.pitagoras.springboot.demo.rent.repository.CarRepository;
+import com.pitagoras.springboot.demo.rent.entity.Car;
+import com.pitagoras.springboot.demo.rent.service.CarService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.pitagoras.springboot.demo.rent.entity.Car;
-
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cars")
 public class CarController {
 
-    private CarDAO carDAO;
+    private final CarRepository carRepository;
+    private final CarService carService;
 
     @Autowired
-    public CarController(CarDAO carDAO) {
-        this.carDAO = carDAO;
+    public CarController(CarRepository carRepository, CarService carService) {
+        this.carRepository = carRepository;
+        this.carService = carService;
     }
 
     @PostMapping()
-    public Car save(@RequestBody Car carRequest) {
-
-        carRequest.setId(0);
-        this.carDAO.save(carRequest);
-        return this.carDAO.findById(carRequest.getId());
+    public Car save(@RequestBody Car car) {
+        return this.carService.save(car);
     }
 
     @GetMapping("/find/{carId}")
     public Car findById(@PathVariable int carId) {
-
-        Car vetura = this.carDAO.findById(carId);
-        if (vetura == null) {
-            throw new CarNotFoundException("Car with id " + carId + " not found.");
-        }
-        return vetura;
-
+        return carService.findById(carId);
     }
 
     @PutMapping("/{id}")
     public Car updateCar(@RequestBody Car car,@PathVariable int id) {
-        Car toUpdatedCar = this.carDAO.findById(id);
-        if(toUpdatedCar == null){
-            throw new CarNotFoundException("Car with id "+ id + " not found to update");
+        Car toUpdateCar = this.carService.findById(id);
+        if(toUpdateCar == null){
+            throw new RuntimeException("Car with id "+ id + "not found to update");
         }
         car.setId(id);
-        this.carDAO.updateCar(car);
-        Car updatedCar = this.carDAO.findById(car.getId());
-        return updatedCar;
+        return this.carService.updateCar(car);
+    }
+
+    @GetMapping("/list")
+    public List<Car> findAll() {
+        return this.carService.findAll();
+    }
+
+    @GetMapping("/find-car-plate/{licensePlate}")
+    public Car findByPlate(@PathVariable String licensePlate) {
+        return carService.findByLicensePlate(licensePlate);
 
     }
 
     @DeleteMapping("/{id}")
     public boolean deleteCar(@PathVariable int id) {
-        Car car = this.carDAO.findById(id);
-        if (car == null) {
-            throw new CarNotFoundException("Car with id "+ id + " was not found");
-        }
-        carDAO.deleteCar(car);
-        return true;
-    }
-
-    @GetMapping("/list")
-    public List<Car> findAll() {
-        List<Car> cars = this.carDAO.findAll();
-        return cars;
-    }
-
-    @GetMapping("/test-html")
-    public String testingHtml() {
-        return "<h1>Pitagoras sasad</h1>" +
-                "<button>Kliko ketu</button>";
-
-    }
-
-    @GetMapping("/find-car-plate/{licensePlate}")
-    public Car findByPlate(@PathVariable String licensePlate) {
-
-        Car vetura = this.carDAO.find(licensePlate);
-        if (vetura == null) {
-            throw new CarNotFoundException("Car with licensePlate " + licensePlate + " not found.");
-        }
-        return vetura;
-
+        return carService.deleteById(id);
     }
 }
+

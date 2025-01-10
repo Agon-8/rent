@@ -1,12 +1,9 @@
 package com.pitagoras.springboot.demo.rent.seeds;
 
-import com.pitagoras.springboot.demo.rent.dao.CarDAOImpl;
-import com.pitagoras.springboot.demo.rent.dao.CarRepository;
-import com.pitagoras.springboot.demo.rent.dao.SeedRepository;
+import com.pitagoras.springboot.demo.rent.repository.CarRepository;
+import com.pitagoras.springboot.demo.rent.repository.SeedRepository;
 import com.pitagoras.springboot.demo.rent.entity.Car;
 import com.pitagoras.springboot.demo.rent.entity.Seed;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

@@ -1,4 +1,4 @@
-package com.pitagoras.springboot.demo.rent.dao;
+package com.pitagoras.springboot.demo.rent.repository;
 
 import com.pitagoras.springboot.demo.rent.entity.Seed;
 import org.springframework.data.jpa.repository.JpaRepository;
