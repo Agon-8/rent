@@ -1,21 +1,36 @@
 package com.pitagoras.springboot.demo.rent.entity;
 
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+@Entity
 @Table(name = "users")
 public class User {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int userId;
+
     private String name;
+
     private String email;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    private String password;
+
+    private String username;
+
+    private boolean enabled;
+
     // Private constructor to enforce controlled creation
-    private User() {
+    public User() {
     }
 
     // Getters and Setters
@@ -59,6 +74,30 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     // Builder pattern for controlled object creation
     public static class Builder {
         private final User users;
@@ -95,5 +134,8 @@ public class User {
         public User build() {
             return users;
         }
+
+
+
     }
 }

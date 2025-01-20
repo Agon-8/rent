@@ -43,7 +43,7 @@ public class RentSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/cars").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.PUT, "/cars/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.DELETE, "/cars/**").hasRole("ADMIN"));
-// use HTTP Basic authentication
+
         http.httpBasic(Customizer.withDefaults());
 
         http.csrf(csrf -> csrf.disable());
