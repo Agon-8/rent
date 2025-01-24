@@ -33,11 +33,12 @@ public class RentSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers(HttpMethod.GET, "/cars/list").hasRole("EMPLOYEE")
-                        .requestMatchers(HttpMethod.GET, "/cars/find/**").hasRole("EMPLOYEE")
-                        .requestMatchers(HttpMethod.POST, "/cars").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.PUT, "/cars/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/cars/list").hasAnyRole("EMPLOYEE","MANAGER","ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/cars/find/").hasAnyRole("EMPLOYEE","MANAGER","ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/cars").hasAnyRole("MANAGER","ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/cars/").hasAnyRole("MANAGER","ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/cars/**").hasRole("ADMIN"));
+
         http.httpBasic(Customizer.withDefaults());
 
         http.csrf(csrf->csrf.disable());

@@ -1,19 +1,23 @@
 package com.pitagoras.springboot.demo.rent.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "authorities")
 public class Authority {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
     @Column(name = "user_id")
     private int userId;
 
     @Column(name = "authority")
     private String authority;
 
-    public Authority(){
+    public Authority() {
 
     }
 

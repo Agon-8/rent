@@ -99,9 +99,6 @@ public class User {
         this.enabled = enabled;
     }
 
-    public String getAuthorities() {
-        return getAuthorities();
-    }
 
     // Builder pattern for controlled object creation
     public static class Builder {

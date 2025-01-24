@@ -14,21 +14,16 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.util.List;
 import java.util.Optional;
 
-
 @Configuration
 @EnableTransactionManagement
 public class SetUserRoles implements ApplicationRunner {
-
     private final AuthorityRepository authorityRepository;
     private final SeedRepository seedRepository;
-    private final UserRepository userRepository;
-
 
     @Autowired
-    public SetUserRoles(AuthorityRepository authorityRepository, SeedRepository seedRepository, UserRepository userRepositoryl, UserRepository userRepository) {
+    public SetUserRoles(AuthorityRepository authorityRepository, SeedRepository seedRepository) {
         this.authorityRepository = authorityRepository;
         this.seedRepository = seedRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -43,26 +38,23 @@ public class SetUserRoles implements ApplicationRunner {
         seedToBeExecuted.setName(seedName);
         seedToBeExecuted.setSuccess(false);
 
-        Seed savedSeed = this.seedRepository.save(seedToBeExecuted);
-
-        Authority admin = new Authority();
-        admin.setUserId(1);
-        admin.setAuthority("ROLE_ADMIN");
-        this.authorityRepository.save(admin);
+        Authority manager = new Authority();
+        manager.setUserId(1);
+        manager.setAuthority("ROLE_MANAGER");
+        this.authorityRepository.save(manager);
 
         Authority employee = new Authority();
         employee.setUserId(2);
         employee.setAuthority("ROLE_EMPLOYEE");
         this.authorityRepository.save(employee);
 
-
-        Authority manager = new Authority();
-        manager.setUserId(3);
-        manager.setAuthority("ROLE_MANAGER");
-        this.authorityRepository.save(manager);
+        Authority admin = new Authority();
+        admin.setUserId(3);
+        admin.setAuthority("ROLE_ADMIN");
+        this.authorityRepository.save(admin);
 
         seedToBeExecuted.setSuccess(true);
         this.seedRepository.save(seedToBeExecuted);
-        }
     }
 
+}
