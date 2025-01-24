@@ -3,6 +3,7 @@ package com.pitagoras.springboot.demo.rent.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "users")
@@ -96,6 +97,10 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getAuthorities() {
+        return getAuthorities();
     }
 
     // Builder pattern for controlled object creation

@@ -9,31 +9,26 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class RentSecurityConfig {
-
     @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
-        UserDetails john = User.builder()
-                .username("john")
-                .password("{noop}$2a$12$hcGr1oIw8Z2LUHeoAnSA9OnuJk22TkkmsWveV2jsRgaw66zSTfFsy")
-                .roles("EMPLOYEE")
-                .build();
-        UserDetails mary = User.builder()
-                .username("mary")
-                .password("{bcrypt}$2a$12$hcGr1oIw8Z2LUHeoAnSA9OnuJk22TkkmsWveV2jsRgaw66zSTfFsy")
-                .roles("EMPLOYEE", "MANAGER")
-                .build();
-        UserDetails susan = User.builder()
-                .username("susan")
-                .password("{bcrypt}$2a$12$hcGr1oIw8Z2LUHeoAnSA9OnuJk22TkkmsWveV2jsRgaw66zSTfFsy")
-                .roles("EMPLOYEE","MANAGER","ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(john, mary, susan);
-    }
+    public UserDetailsManager userDetailsManager(DataSource dataSource) {
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 
+        jdbcUserDetailsManager.setUsersByUsernameQuery(
+                "select user_id,password,enabled from users where user_id = ?"
+        );
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+                "select user_id,authority from authorities where user_id = ?"
+        );
+        return jdbcUserDetailsManager;
+    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
@@ -43,11 +38,9 @@ public class RentSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/cars").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.PUT, "/cars/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.DELETE, "/cars/**").hasRole("ADMIN"));
-
         http.httpBasic(Customizer.withDefaults());
 
-        http.csrf(csrf -> csrf.disable());
-
+        http.csrf(csrf->csrf.disable());
         return http.build();
     }
 
