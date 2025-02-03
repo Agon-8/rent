@@ -49,7 +49,10 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> findAll() {
+    public List<Car> findAll(Boolean isAvailable) {
+        if (isAvailable != null){
+            return carRepository.findByAvailable(isAvailable);
+        }
         return this.carRepository.findAll();
     }
 

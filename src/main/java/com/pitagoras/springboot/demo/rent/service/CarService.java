@@ -12,7 +12,7 @@ public interface CarService {
 
     Car updateCar(Car theCar);
 
-    List<Car> findAll();
+    List<Car> findAll(Boolean isAvailable);
 
     Car findByLicensePlate(String licensePlate);
 

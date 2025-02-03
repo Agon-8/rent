@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface CarRepository extends JpaRepository<Car,Integer> {
     @Query("select c from Car c where c.licensePlate = :licensePlate")
     Optional<Car> findByLicensePlate(@Param("licensePlate") String licensePlate);
+
+    List<Car>findByAvailable(Boolean isAvailable);
 }

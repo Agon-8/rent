@@ -13,12 +13,10 @@ import java.util.List;
 @RequestMapping("/cars")
 public class CarController {
 
-    private final CarRepository carRepository;
     private final CarService carService;
 
     @Autowired
-    public CarController(CarRepository carRepository, CarService carService) {
-        this.carRepository = carRepository;
+    public CarController(CarService carService) {
         this.carService = carService;
     }
 
@@ -43,8 +41,9 @@ public class CarController {
     }
 
     @GetMapping("/list")
-    public List<Car> findAll() {
-        return this.carService.findAll();
+    public List<Car> findAll(@RequestParam(required = false)Boolean isAvailable) {
+        List<Car>cars = this.carService.findAll(isAvailable);
+        return cars;
     }
 
     @GetMapping("/find-car-plate/{licensePlate}")
