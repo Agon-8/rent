@@ -1,9 +1,9 @@
 package com.pitagoras.springboot.demo.rent.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 @Entity
 @Table(name = "users")
@@ -29,6 +29,12 @@ public class User {
     private String username;
 
     private boolean enabled;
+
+    //    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+//@JoinColumn(name = "user_id",referencedColumnName = "id")
+    private Customer customer;
 
     // Private constructor to enforce controlled creation
     public User() {
@@ -99,6 +105,16 @@ public class User {
         this.enabled = enabled;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+//        if (customer != null) {
+//            customer.setUser(this);
+//        }
+    }
 
     // Builder pattern for controlled object creation
     public static class Builder {
@@ -136,7 +152,6 @@ public class User {
         public User build() {
             return users;
         }
-
 
 
     }

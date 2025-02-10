@@ -40,6 +40,8 @@ public class RentSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/cars").hasAnyRole("MANAGER","ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/cars/").hasAnyRole("MANAGER","ADMIN")
                         .requestMatchers(HttpMethod.POST, "/customer").hasAnyRole("EMPLOYEE","MANAGER","ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/customer/**").hasAnyRole("EMPLOYEE","MANAGER","ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/user/**").hasAnyRole("EMPLOYEE","MANAGER","ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/cars/**").hasRole("ADMIN"));
 
 

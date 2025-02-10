@@ -1,17 +1,15 @@
 package com.pitagoras.springboot.demo.rent.seeds;
 import com.pitagoras.springboot.demo.rent.entity.Authority;
 import com.pitagoras.springboot.demo.rent.entity.Seed;
-import com.pitagoras.springboot.demo.rent.entity.User;
 import com.pitagoras.springboot.demo.rent.repository.AuthorityRepository;
 import com.pitagoras.springboot.demo.rent.repository.SeedRepository;
-import com.pitagoras.springboot.demo.rent.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.util.List;
+
 import java.util.Optional;
 
 @Configuration

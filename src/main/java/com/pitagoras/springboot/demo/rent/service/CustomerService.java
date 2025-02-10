@@ -5,4 +5,6 @@ import com.pitagoras.springboot.demo.rent.entity.Customer;
 public interface CustomerService {
 
     Customer save(Customer customer);
+
+    Customer findById(int id);
 }
