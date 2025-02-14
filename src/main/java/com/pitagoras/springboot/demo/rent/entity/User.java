@@ -1,12 +1,14 @@
 package com.pitagoras.springboot.demo.rent.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User {
 
     @Id
@@ -30,15 +32,10 @@ public class User {
 
     private boolean enabled;
 
-    //    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
-//@JoinColumn(name = "user_id",referencedColumnName = "id")
     private Customer customer;
 
-    // Private constructor to enforce controlled creation
-    public User() {
-    }
+    public User() {}
 
     // Getters and Setters
     public int getUserId() {
@@ -111,48 +108,17 @@ public class User {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-//        if (customer != null) {
-//            customer.setUser(this);
-//        }
     }
 
-    // Builder pattern for controlled object creation
-    public static class Builder {
-        private final User users;
-
-        public Builder() {
-            users = new User();
-        }
-
-        public Builder userId(int userId) {
-            users.setUserId(userId);
-            return this;
-        }
-
-        public Builder name(String name) {
-            users.setName(name);
-            return this;
-        }
-
-        public Builder email(String email) {
-            users.setEmail(email);
-            return this;
-        }
-
-        public Builder createdAt(LocalDateTime createdAt) {
-            users.setCreatedAt(createdAt);
-            return this;
-        }
-
-        public Builder updatedAt(LocalDateTime updatedAt) {
-            users.setUpdatedAt(updatedAt);
-            return this;
-        }
-
-        public User build() {
-            return users;
-        }
-
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", customer=" + (customer != null ? customer.getId() : "null") +
+                '}';
     }
 }

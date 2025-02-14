@@ -1,12 +1,14 @@
 package com.pitagoras.springboot.demo.rent.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "customers")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Customer {
 
     @Id
@@ -25,9 +27,8 @@ public class Customer {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToOne(cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", unique = true)
     private User user;
 
     @PrePersist
@@ -52,14 +53,6 @@ public class Customer {
     // Getters and Setters
     public Long getId() {
         return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public void setId(Long id) {
@@ -90,6 +83,14 @@ public class Customer {
         return updatedAt;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
@@ -98,6 +99,7 @@ public class Customer {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", user=" + (user != null ? user.getUserId() : "null") +
                 '}';
     }
 }
