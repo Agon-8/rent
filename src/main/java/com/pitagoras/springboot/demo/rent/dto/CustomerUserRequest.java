@@ -1,8 +1,5 @@
-package com.pitagoras.springboot.demo.rent;
+package com.pitagoras.springboot.demo.rent.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 //@JsonAnyGetter
 //@JsonSetter

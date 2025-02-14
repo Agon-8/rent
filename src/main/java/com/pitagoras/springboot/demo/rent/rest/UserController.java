@@ -1,8 +1,6 @@
 package com.pitagoras.springboot.demo.rent.rest;
 
 
-import com.pitagoras.springboot.demo.rent.CustomerUserRequest;
-import com.pitagoras.springboot.demo.rent.entity.Customer;
 import com.pitagoras.springboot.demo.rent.entity.User;
 import com.pitagoras.springboot.demo.rent.repository.CustomerRepository;
 import com.pitagoras.springboot.demo.rent.service.UserService;
