@@ -2,7 +2,7 @@ package com.pitagoras.springboot.demo.rent.service;
 
 import com.pitagoras.springboot.demo.rent.entity.Car;
 import com.pitagoras.springboot.demo.rent.repository.CarRepository;
-import com.pitagoras.springboot.demo.rent.rest.CarNotFoundException;
+import com.pitagoras.springboot.demo.rent.exception.CarNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;

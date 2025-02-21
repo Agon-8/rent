@@ -1,9 +1,8 @@
 package com.pitagoras.springboot.demo.rent.service;
 
-import com.pitagoras.springboot.demo.rent.entity.Car;
 import com.pitagoras.springboot.demo.rent.entity.Order;
 import com.pitagoras.springboot.demo.rent.repository.OrderRepository;
-import com.pitagoras.springboot.demo.rent.rest.CarNotFoundException;
+import com.pitagoras.springboot.demo.rent.exception.CarNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

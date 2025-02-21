@@ -1,4 +1,4 @@
-package com.pitagoras.springboot.demo.rent.rest;
+package com.pitagoras.springboot.demo.rent.exception;
 
 public class CarErrorResponse {
 

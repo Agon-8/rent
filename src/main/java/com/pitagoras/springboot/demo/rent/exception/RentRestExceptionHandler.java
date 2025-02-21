@@ -1,4 +1,4 @@
-package com.pitagoras.springboot.demo.rent.rest;
+package com.pitagoras.springboot.demo.rent.exception;
 
 
 import org.springframework.http.HttpStatus;
