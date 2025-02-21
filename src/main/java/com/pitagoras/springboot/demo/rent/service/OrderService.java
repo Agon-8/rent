@@ -17,4 +17,5 @@ public interface OrderService {
 
     boolean deleteById(Long id);
 
+    List<Order> findByCustomerId(Integer customerId);
 }

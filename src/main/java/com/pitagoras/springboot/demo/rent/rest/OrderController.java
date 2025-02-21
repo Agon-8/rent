@@ -47,4 +47,9 @@ public class OrderController {
     public boolean deleleOrder(@PathVariable long id){
         return orderService.deleteById(id);
     }
+    @GetMapping("/list/{customerId}")
+    public List<Order> findByCustomerId(@PathVariable Integer customerId){
+        return this.orderService.findByCustomerId(customerId);
+    }
+
 }
