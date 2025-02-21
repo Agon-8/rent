@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/order")
 public class OrderController {
 
-    private final OrderService orderService;
+    private  OrderService orderService;
 
     @Autowired
     public OrderController(OrderService orderService) {
@@ -23,6 +23,7 @@ public class OrderController {
 
     @PostMapping
     public Order createOrder(@RequestBody Order order){
+        System.out.println(order);
         return this.orderService.save(order);
     }
     @GetMapping("/{orderId}")

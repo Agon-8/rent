@@ -18,9 +18,16 @@ public class Order {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
+    @Column(name = "customer_id", insertable = false, updatable = false)
+    private Integer customerId;
+
     @ManyToOne
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
+
+
+    @Column(name = "car_id", insertable = false, updatable = false)
+    private Integer carId;
 
     @Column(name = "rental_start_date", nullable = false)
     private LocalDate rentalStartDate;
@@ -54,10 +61,13 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long id, Customer customer, Car car, LocalDate rentalStartDate, LocalDate rentalEndDate, BigDecimal totalPrice, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+
+    public Order(Long id, Customer customer, Integer customerId, Car car, Integer carId, LocalDate rentalStartDate, LocalDate rentalEndDate, BigDecimal totalPrice, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.customer = customer;
+        this.customerId = customerId;
         this.car = car;
+        this.carId = carId;
         this.rentalStartDate = rentalStartDate;
         this.rentalEndDate = rentalEndDate;
         this.totalPrice = totalPrice;
@@ -66,12 +76,28 @@ public class Order {
         this.updatedAt = updatedAt;
     }
 
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getCarId() {
+        return carId;
+    }
+
+    public void setCarId(Integer carId) {
+        this.carId = carId;
     }
 
     public Customer getCustomer() {
@@ -138,12 +164,15 @@ public class Order {
         this.updatedAt = updatedAt;
     }
 
+
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
                 ", customer=" + customer +
+                ", customerId=" + customerId +
                 ", car=" + car +
+                ", carId=" + carId +
                 ", rentalStartDate=" + rentalStartDate +
                 ", rentalEndDate=" + rentalEndDate +
                 ", totalPrice=" + totalPrice +
